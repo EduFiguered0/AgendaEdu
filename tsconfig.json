@@ -1,19 +1,58 @@
 {
     "compilerOptions": {
-        "target": "ES2022",
+        "target": "ES2020",
         "module": "commonjs",
+        "lib": [
+            "ES2020"
+        ],
         "outDir": "./dist",
         "rootDir": "./src",
-        "strict": true,
+        "strict": false,
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "declaration": false,
+        "declarationMap": false,
+        "sourceMap": true,
+        "removeComments": true,
+        "noImplicitAny": false,
+        "strictNullChecks": false,
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "baseUrl": "./",
+        "paths": {
+            "@/*": [
+                "src/*"
+            ],
+            "@/domain/*": [
+                "src/domain/*"
+            ],
+            "@/infrastructure/*": [
+                "src/infrastructure/*"
+            ],
+            "@/application/*": [
+                "src/application/*"
+            ],
+            "@/shared/*": [
+                "src/shared/*"
+            ]
+        }
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "scripts/**/*"
     ],
     "exclude": [
         "node_modules",
         "dist"
-    ]
+    ],
+    "ts-node": {
+        "esm": false,
+        "experimentalSpecifierResolution": "node",
+        "compilerOptions": {
+            "module": "commonjs"
+        }
+    }
 }

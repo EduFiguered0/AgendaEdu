@@ -8,13 +8,20 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development  # Mudei para development
       - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=agendaedu
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres123
+    depends_on:
+      - postgres
     restart: unless-stopped
     networks:
       - app-network
 
-  # PostgreSQL (para quando implementarmos)
+  # PostgreSQL
   postgres:
     container_name: agenda-edu-db
     image: postgres:15-alpine
@@ -29,9 +36,32 @@ services:
     networks:
       - app-network
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Jenkins (MAIS SEGURO)
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: jenkins
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+    - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+    networks:
+      - app-network
+    user: root
 
 volumes:
   postgres_data:
+  jenkins_data:
 
 networks:
   app-network:
